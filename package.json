@@ -1,5 +1,5 @@
 {
-  "name": "@mrgainn-react-native-image-modal",
+  "name": "@mr_gain/react-native-image-modal",
   "version": "3.0.12",
   "description": "image full screen modal for react native",
   "main": "dist/index.js",
