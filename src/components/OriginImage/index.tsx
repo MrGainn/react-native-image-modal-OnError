@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { ImageResizeMode, ImageSourcePropType, ImageStyle, StyleProp } from 'react-native'
+import type { ImageErrorEventData, ImageResizeMode, ImageSourcePropType, ImageStyle, NativeSyntheticEvent, StyleProp } from 'react-native'
 import { Animated, Image, TouchableOpacity } from 'react-native'
 
 interface Props {
@@ -15,7 +15,8 @@ interface Props {
     readonly source: ImageSourcePropType
     readonly style?: StyleProp<ImageStyle>
     readonly resizeMode: ImageResizeMode
-  }): ReactNode
+  }): ReactNode,
+  onError?: (event: NativeSyntheticEvent<ImageErrorEventData>) => void
 }
 
 const OriginImage = ({
@@ -28,6 +29,7 @@ const OriginImage = ({
   onDialogOpen,
   onLongPressOriginImage,
   renderImageComponent,
+  onError,
 }: Props) => {
   const handleOpen = (): void => {
     if (disabled) {
@@ -54,7 +56,7 @@ const OriginImage = ({
             resizeMode,
           })
         ) : (
-          <Image source={source} style={style} resizeMode={resizeMode} />
+          <Image source={source} style={style} resizeMode={resizeMode} onError={(event:any)=> console.log("error")}/>
         )}
       </TouchableOpacity>
     </Animated.View>

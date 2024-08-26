@@ -1,6 +1,6 @@
 import type { ReactNode, RefObject } from 'react'
 import React, { createRef, forwardRef, useImperativeHandle, useRef, useState } from 'react'
-import type { StyleProp, ImageStyle, ImageResizeMode, ImageSourcePropType } from 'react-native'
+import type { StyleProp, ImageStyle, ImageResizeMode, ImageSourcePropType, NativeSyntheticEvent, ImageErrorEventData } from 'react-native'
 import { Animated, View } from 'react-native'
 
 import { ImageDetail, OriginImage } from './components'
@@ -47,6 +47,7 @@ interface ReactNativeImageModal {
  * @property {(vx: number, scale: number) => void} [responderRelease] - Callback when finger(s) is released on modal image.
  * @property {() => void} [willClose] - Callback when image modal is closing.
  * @property {() => void} [onClose] - Callback when image modal is closed.
+ * @property {(event: NativeSyntheticEvent<ImageErrorEventData>) => void} [onError] - The error that will be displayed: 
  */
 interface Props {
   /**
@@ -129,6 +130,8 @@ interface Props {
    *  @default 100
    */
   readonly animationDuration?: number
+
+  onError?(event: NativeSyntheticEvent<ImageErrorEventData>): void;
   /**
    *  Render custom header component. You can close image modal by calling close function.
    */
@@ -185,6 +188,8 @@ interface Props {
    *  Callback when image modal is closed.
    */
   onClose?(): void
+
+
 }
 
 /**
@@ -224,6 +229,7 @@ const ImageModal = forwardRef<ReactNativeImageModal, Props>(
       responderRelease,
       willClose,
       onClose,
+      onError
     }: Props,
     ref,
   ) => {
@@ -290,6 +296,7 @@ const ImageModal = forwardRef<ReactNativeImageModal, Props>(
           onDialogOpen={handleOpen}
           onLongPressOriginImage={onLongPressOriginImage}
           renderImageComponent={renderImageComponent}
+          onError={onError}
         />
         {isModalOpen && (
           <ImageDetail
